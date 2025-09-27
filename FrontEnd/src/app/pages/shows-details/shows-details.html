@@ -1,0 +1,51 @@
+<div class="container mt-5">
+  @if (loading) {
+  <div class="text-center">
+    <p>Loading show details...</p>
+  </div>
+  } @else { @if (show) {
+  <div class="card shadow-lg p-3 d-flex flex-row align-items-start">
+    <!-- Left: Image -->
+    <div class="col-md-5">
+      <img [src]="show.posterUrl" class="img-fluid rounded shadow-sm" alt="{{ show.title }}" />
+    </div>
+
+    <!-- Right: Info -->
+    <div class="col-md-7 ps-4">
+      <div class="card-body">
+        <h3 class="card-title text-primary mb-3">{{ show.title }}</h3>
+        <p class="card-text text-muted">{{ show.description }}</p>
+
+        <!-- Dropdown for schedules -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">📅 Select Schedule:</label>
+          <select class="form-select" [(ngModel)]="selectedSchedule" required>
+            <option [ngValue]="null" disabled selected>-- Choose a schedule --</option>
+            <option *ngFor="let s of show.schedules" [ngValue]="s">
+              Date: {{ s.date }} / Time : {{ s.time }} PM
+            </option>
+          </select>
+        </div>
+
+        <p><strong>💰 Price:</strong> {{ show.price | currency }}</p>
+      </div>
+
+      <div class="card-footer bg-transparent mt-3 d-flex justify-content-between">
+        <a routerLink="/shows" class="btn btn-outline-secondary">⬅️ Back to Shows</a>
+        <!-- Book button disabled until schedule is chosen -->
+        <button
+          class="btn btn-outline-primary"
+          [disabled]="!selectedSchedule"
+          (click)="bookTicket()"
+        >
+          Book Ticket ➡️
+        </button>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <div class="text-center">
+    <p>Show not found.</p>
+  </div>
+  } }
+</div>
