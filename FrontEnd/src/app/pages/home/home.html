@@ -1,5 +1,4 @@
 <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-  <!-- Indicators -->
   <div class="carousel-indicators">
     <button
       type="button"
@@ -11,7 +10,6 @@
     <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
   </div>
 
-  <!-- Slides -->
   <div class="carousel-inner">
     <!-- Slide 1 -->
     <div class="carousel-item active">
@@ -19,7 +17,7 @@
       <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
         <h1 class="fw-bold">Welcome to Theatra</h1>
         <p class="lead">Modern solutions for your business needs</p>
-        <a href="#services" class="btn btn-dark btn-lg mt-3">Explore Services</a>
+        <a [routerLink]="['shows']" class="btn btn-dark btn-lg mt-3">Explore Shows</a>
       </div>
     </div>
 
@@ -29,7 +27,7 @@
       <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
         <h1 class="fw-bold">Trusted by Thousands</h1>
         <p class="lead">Delivering excellence and innovation every day</p>
-        <a href="#about" class="btn btn-outline-light btn-lg mt-3">Learn More</a>
+        <a [routerLink]="['about']" class="btn btn-outline-light btn-lg mt-3">Learn More</a>
       </div>
     </div>
 
@@ -39,12 +37,11 @@
       <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
         <h1 class="fw-bold">Get Started Today</h1>
         <p class="lead">Join us and achieve more with less effort</p>
-        <a href="#contact" class="btn btn-success btn-lg mt-3">Contact Us</a>
+        <a [routerLink]="['contact']" class="btn btn-success btn-lg mt-3">Contact Us</a>
       </div>
     </div>
   </div>
 
-  <!-- Controls -->
   <button
     class="carousel-control-prev"
     type="button"
@@ -64,3 +61,6 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
+<app-about></app-about>
+<app-contact></app-contact>

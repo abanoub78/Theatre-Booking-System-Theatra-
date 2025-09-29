@@ -1,0 +1,24 @@
+:root {
+  --accent: #6c1d45;
+}
+
+.container h3 {
+  color: var(--accent);
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent), #b23a6d);
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.invalid-feedback {
+  display: block;
+}

@@ -3,6 +3,8 @@ import { Register } from './auth/register/register';
 import { Login } from './auth/login/login';
 import { Notfound } from './pages/notfound/notfound';
 import { Home } from './pages/home/home';
+import { About } from './pages/about/about';
+import { Contact } from './pages/contact/contact';
 import { Shows } from './pages/shows/shows';
 import { ShowsDetails } from './pages/shows-details/shows-details';
 import { Seats } from './pages/seats/seats';
@@ -12,6 +14,8 @@ import { adminGuard } from './admin-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
+  { path: 'about', component: About },
+  { path: 'contact', component: Contact },
   { path: 'shows', component: Shows },
   { path: 'shows/:id', component: ShowsDetails },
   { path: 'booking', component: Seats },
