@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ShowController;
+use App\Http\Controllers\SeatController;
 
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -25,3 +26,5 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 
 Route::apiResource('shows', ShowController::class);
+Route::get('/seats', [SeatController::class, 'allSeats']);
+

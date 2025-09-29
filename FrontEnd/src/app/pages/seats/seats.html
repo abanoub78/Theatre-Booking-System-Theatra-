@@ -1,17 +1,11 @@
 <div class="container mt-4">
   <h3 class="mb-3 text-center">🎟️ Select Your Seat</h3>
-
   <div class="seat-grid">
     @for (seat of seats; track seat.id) {
-    <div
-      class="seat"
-      [ngClass]="{
-        booked: seat.status === 'booked',
-        available: seat.status === 'available'
-      }"
-    >
-      {{ seat.number }}
+    <div class="seat">
+      Seat : <strong>{{ seat.seat_title }}</strong> 
+      Degree : {{ seat.seat_degree }}
     </div>
     }
   </div>
-</div>
+</div> 
