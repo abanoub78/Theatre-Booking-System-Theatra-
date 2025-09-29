@@ -29,6 +29,8 @@ export class AuthService {
     return this.http.post(`${environment.apiUrl}/login`, credentials).pipe(
       tap((res: any) => {
         localStorage.setItem('token', res.token);
+        localStorage.setItem('username', res.user.name);
+        localStorage.setItem('is_admin', res.user.is_admin ? '1' : '0');
         this.loggedIn.next(true);
       })
     );
@@ -36,6 +38,15 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('is_admin');
     this.loggedIn.next(false);
+  }
+
+  getUser() {
+    return {
+      username: localStorage.getItem('username') || '', // إذا null يرجع ''
+      isAdmin: localStorage.getItem('is_admin') === '1', // '1' تتحول ل true
+    };
   }
 }

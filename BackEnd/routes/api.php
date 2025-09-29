@@ -20,11 +20,16 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 
-// Route::get('/shows', [ShowController::class, 'index']);      // get all shows
-// Route::get('/shows/{id}', [ShowController::class, 'show']);  // get single show
-// Route::post('/shows', [ShowController::class, 'store']); // optional for admin
-
-
-Route::apiResource('shows', ShowController::class);
+Route::get('shows', [ShowController::class, 'index']);
+Route::get('shows/{id}', [ShowController::class, 'show']);
+// Route::apiResource('shows', ShowController::class);
 Route::get('/seats', [SeatController::class, 'allSeats']);
 
+    Route::post('/shows', [ShowController::class, 'store']);
+  Route::put('/shows/{id}', [ShowController::class, 'update']);
+    Route::delete('/shows/{id}', [ShowController::class, 'destroy']);
+    
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+  
+});

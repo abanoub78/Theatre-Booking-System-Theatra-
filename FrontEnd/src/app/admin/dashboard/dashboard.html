@@ -1,0 +1,17 @@
+<div class="container mt-4">
+  <h2 class="mb-4">🎭 Admin Dashboard</h2>
+
+  <!-- Add / Edit Show -->
+  <app-show-form
+    [editingShow]="editingShow"
+    (save)="handleSave($event)"
+    (cancel)="editingShow = null"
+  ></app-show-form>
+
+  <!-- Shows List -->
+  <app-show-list
+    [shows]="shows"
+    (edit)="editShow($event)"
+    (delete)="deleteShow($event)"
+  ></app-show-list>
+</div>

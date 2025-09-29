@@ -1,0 +1,40 @@
+<div class="row g-4">
+  @for (show of shows; track show.id) {
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <img
+        [src]="
+          show.posterUrl ||
+          'https://daadgeem.com/cdn/shop/products/file_a65b0c1a-28c0-45a3-a7e4-fabc19fa0e21.jpg?v=1703017088'
+        "
+        class="card-img-top"
+        alt="{{ show.title }}"
+        style="height: 300px !important"
+      />
+
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ show.title }}</h5>
+        <p class="card-text text-muted small">{{ show.description }}</p>
+
+        <div class="mt-auto">
+          <span class="badge bg-primary me-2">{{ show.price }}$</span>
+          <span class="badge bg-secondary">{{ show.schedules?.length || 0 }} Schedules</span>
+        </div>
+      </div>
+
+      @if (show.schedules?.length) {
+      <ul class="list-group list-group-flush">
+        @for (s of show.schedules; track $index) {
+        <li class="list-group-item">📅 {{ s.date }} ⏰ {{ s.time }}</li>
+        }
+      </ul>
+      }
+
+      <div class="card-footer d-flex justify-content-between">
+        <button class="btn btn-sm btn-warning" (click)="edit.emit(show)">✏️ Edit</button>
+        <button class="btn btn-sm btn-danger" (click)="delete.emit(show.id)">🗑️ Delete</button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
 export class Register {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -26,7 +26,8 @@ export class Register {
   onSubmit() {
     if (this.registerForm.valid) {
       this.auth.register(this.registerForm.getRawValue()).subscribe({
-        next: (res) => alert('✅ Registered successfully'),
+        next: (res) => this.router.navigate(['login']),
+
         error: (err) => {
           console.error(err); // 🔹 يطبع الخطأ في الكونسول
           alert('❌ Registration failed: ' + JSON.stringify(err.error));

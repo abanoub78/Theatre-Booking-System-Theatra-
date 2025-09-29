@@ -1,0 +1,38 @@
+<div class="card mb-4 p-3 shadow-sm">
+  <h5>{{ editingShow ? '✏️ Edit Show' : '➕ Add New Show' }}</h5>
+
+  <input type="text" [(ngModel)]="model.title" placeholder="Title" class="form-control mb-2" />
+  <textarea
+    [(ngModel)]="model.description"
+    placeholder="Description"
+    class="form-control mb-2"
+  ></textarea>
+  <input type="number" [(ngModel)]="model.price" placeholder="Price" class="form-control mb-2" />
+  <input
+    type="text"
+    [(ngModel)]="model.posterUrl"
+    placeholder="Poster URL"
+    class="form-control mb-2"
+  />
+
+  <!-- Schedules -->
+  @for (s of model.schedules; track s; let i = $index) {
+  <div class="mb-2">
+    <input type="date" [(ngModel)]="s.date" class="form-control mb-1" />
+    <input type="time" [(ngModel)]="s.time" class="form-control mb-1" />
+    <button class="btn btn-sm btn-danger" (click)="removeSchedule(i)">❌ Remove</button>
+  </div>
+  }
+
+  <button class="btn btn-sm btn-secondary mb-2" (click)="addSchedule()">➕ Add Schedule</button>
+
+  <div>
+    <button class="btn btn-success me-2" (click)="save.emit(model); resetForm()">
+      {{ editingShow ? '💾 Update' : '➕ Add' }}
+    </button>
+
+    @if (editingShow) {
+    <button class="btn btn-secondary" (click)="cancel.emit()">Cancel</button>
+    }
+  </div>
+</div>

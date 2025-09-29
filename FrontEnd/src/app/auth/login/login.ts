@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css'],
 })
 export class Login {
   loginForm: FormGroup;
@@ -25,8 +25,12 @@ export class Login {
     if (this.loginForm.valid) {
       this.auth.login(this.loginForm.getRawValue()).subscribe({
         next: () => {
-          alert('✅ Logged in successfully');
-          this.router.navigate(['/']);
+          const user = this.auth.getUser();
+          if (user.isAdmin) {
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error: () => alert('❌ Login failed'),
       });

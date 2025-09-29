@@ -12,12 +12,23 @@ import { CommonModule } from '@angular/common';
 })
 export class Header implements OnInit {
   isLoggedIn = false;
+  isAdmin = false;
+  username = '';
 
   constructor(private router: Router, private auth: AuthService) {}
 
   ngOnInit() {
-    this.auth.isLoggedIn$.subscribe((status: boolean) => {
+    this.auth.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
+
+      if (status) {
+        const user = this.auth.getUser();
+        this.username = user.username;
+        this.isAdmin = user.isAdmin;
+      } else {
+        this.username = '';
+        this.isAdmin = false;
+      }
     });
   }
 
