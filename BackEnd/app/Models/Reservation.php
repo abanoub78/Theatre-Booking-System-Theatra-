@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
@@ -15,4 +13,10 @@ class Reservation extends Model
         {
             return $this->belongsTo(Screening::class);
         }
+
+        protected $fillable = [
+        'screening_id',
+        'seat_id',
+        'user_id'
+    ];
 }

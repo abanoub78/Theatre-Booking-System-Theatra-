@@ -18,10 +18,9 @@ export const routes: Routes = [
   { path: 'contact', component: Contact },
   { path: 'shows', component: Shows },
   { path: 'shows/:id', component: ShowsDetails },
-  { path: 'booking', component: Seats },
+  { path: 'booking/:screening_id/:user_id', component: Seats }, //mustafa
   { path: 'register', component: Register },
   { path: 'login', component: Login },
   { path: 'admin/dashboard', component: Dashboard, canActivate: [AuthGuard, adminGuard] },
-
   { path: '**', component: Notfound },
 ];

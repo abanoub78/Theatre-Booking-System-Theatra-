@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ShowController;
 use App\Http\Controllers\SeatController;
+use App\Http\Controllers\ReservationController;
 
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -22,14 +23,16 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::get('shows', [ShowController::class, 'index']);
 Route::get('shows/{id}', [ShowController::class, 'show']);
-// Route::apiResource('shows', ShowController::class);
-Route::get('/seats', [SeatController::class, 'allSeats']);
+Route::apiResource('shows', ShowController::class);
+Route::get('/seats', [SeatController::class, 'allSeats']); // mustafa
+Route::get('/reservations', [ReservationController::class, 'getReservedSeats']); //mustafa
+Route::post('/reservations', [ReservationController::class, 'reserveSeats']);//mustafa
 
-    Route::post('/shows', [ShowController::class, 'store']);
-  Route::put('/shows/{id}', [ShowController::class, 'update']);
-    Route::delete('/shows/{id}', [ShowController::class, 'destroy']);
+Route::post('/shows', [ShowController::class, 'store']);
+Route::put('/shows/{id}', [ShowController::class, 'update']);
+Route::delete('/shows/{id}', [ShowController::class, 'destroy']);
     
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
   
 });

@@ -7,9 +7,11 @@
 }
 
 .seat {
+  border: 2px solid aqua;
+  border-radius: 8px;
+  background-color: aqua;
   width: 60px;
   height: 60px;
-  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;

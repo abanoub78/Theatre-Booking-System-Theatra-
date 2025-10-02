@@ -1,45 +1,80 @@
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-
-// interface Seat {
-//   id: number;
-//   number: string;
-//   status: 'booked' | 'available';
-// }
-
-// @Component({
-//   selector: 'app-seats',
-//   imports: [CommonModule],
-//   templateUrl: './seats.html',
-//   styleUrl: './seats.css',
-// })
-// export class Seats {
-//   seats: Seat[] = [
-//     { id: 1, number: 'A1', status: 'booked' },
-//     { id: 2, number: 'A2', status: 'available' },
-//     { id: 3, number: 'A3', status: 'available' },
-//     { id: 4, number: 'A4', status: 'booked' },
-//     { id: 5, number: 'B1', status: 'available' },
-//     { id: 6, number: 'B2', status: 'available' },
-//     { id: 7, number: 'B3', status: 'booked' },
-//     { id: 8, number: 'B4', status: 'available' },
-//   ];
-// }
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SeatsService, Seat } from '../../services/seats';
-
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-screening-seats',
   templateUrl: './seats.html',
+  imports: [CommonModule],
 })
 export class Seats implements OnInit {
   seats: Seat[] = [];
-  constructor(private seatsService: SeatsService) {}
+  reservedSeats: any[] = [];
+  selectedSeats: number[] = []; 
+  http =inject(HttpClient);
+  screening_id!: number; 
+  user_id!: number; 
+  constructor(private seatsService: SeatsService , private route: ActivatedRoute,  private router: Router) { }
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+    const id = params.get('screening_id');
+    if (id) {
+      this.screening_id = +id;
+    }
+  });
+  this.route.paramMap.subscribe(params => {
+    const id = params.get('user_id');
+    if (id) {
+      this.user_id = +id;
+    }
+  });
     this.seatsService.getAllSeats().subscribe((data) => {
       this.seats = data;
       console.log(this.seats);
+
+      this.seatsService.getReservedSeats().subscribe(data => {
+        this.reservedSeats = data;
+        console.log(this.reservedSeats);
+      });
+    });
+  }
+  isSeatReserved(seat_id: number): boolean {
+    return this.reservedSeats.some(res => res.seat_id === seat_id);
+  }
+  toggleSeat(seat_id:number):void{
+    if (this.isSeatReserved(seat_id)) return;
+
+    if (this.isSelected(seat_id)) {
+      this.selectedSeats = this.selectedSeats.filter(id => id !== seat_id);
+    } else {
+      this.selectedSeats.push(seat_id);
+    }
+  }
+  isSelected(seat_id: number): boolean {
+    return this.selectedSeats.includes(seat_id);
+  }
+  confirmSelection() {
+    console.log(this.selectedSeats);
+    if (this.selectedSeats.length === 0) {
+      alert('please select one or more chair');
+      return;
+    }
+    const payload = {
+      screening_id: this.screening_id,
+      seat_ids: this.selectedSeats,
+      user_id: this.user_id
+    };
+    this.http.post('http://127.0.0.1:8000/api/reservations', payload).subscribe({
+      next: (res) => {
+        alert(' done  ');
+        this.selectedSeats = [];
+        this.router.navigate(['']);
+      },
+      error: (err) => {
+        alert(' error while booking ');
+        console.error(err);
+      }
     });
   }
 }
-
