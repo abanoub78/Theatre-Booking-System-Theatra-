@@ -22,3 +22,39 @@
   </div>
   <button class="btn btn-primary" (click)="confirmSelection()">confirmSelection </button>
 </div> 
+<h2>الخدمات الإضافية</h2>
+
+<div class="services-list">
+  <div *ngFor="let service of availableServices" class="service-item">
+    <span>{{ service.name }} ({{ service.price }} جنيه)</span>
+    <div class="quantity-controls">
+      <button (click)="updateServiceQuantity(service, -1)">-</button>
+      <span>{{ service.quantity }}</span>
+      <button (click)="updateServiceQuantity(service, 1)">+</button>
+    </div>
+  </div>
+</div>
+
+<button (click)="showInvoice = !showInvoice">
+  {{ showInvoice ? 'اخفاء الفاتورة' : 'عرض الفاتورة' }}
+</button>
+
+<div *ngIf="showInvoice" class="invoice">
+  <h3>الفاتورة</h3>
+
+  <h4>المقاعد المختارة:</h4>
+  <ul>
+    <li *ngFor="let seat of selectedSeats">{{ seat }}</li>
+  </ul>
+
+  <h4>الخدمات:</h4>
+  <ul>
+    @for(service of availableServices;track $index ){@if(service.quantity > 0){}
+      <li>
+      {{ service.name }} × {{ service.quantity }} = {{ service.price * service.quantity }} جنيه
+    </li>}
+  </ul>
+
+  <h4>الإجمالي:</h4>
+  <p>{{ calculateTotal() }} جنيه</p>
+</div>
