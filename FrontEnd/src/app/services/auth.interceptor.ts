@@ -1,13 +1,15 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  console.log('🛰️ Interceptor triggered for:', req.url);
   const token = localStorage.getItem('token');
-  console.log('🚀 Sending token:', token); // debug
+  console.log('🔑 Token inside interceptor:', token);
 
   if (token) {
     req = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`, // 👈 بيرسل التوكن مع كل request
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
       },
     });
   }

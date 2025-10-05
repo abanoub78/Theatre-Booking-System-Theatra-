@@ -15,6 +15,7 @@ import { ShowList } from '../show-list/show-list';
 export class Dashboard implements OnInit {
   shows: any[] = [];
   editingShow: any = null;
+  loading = false;
 
   constructor(private http: HttpClient) {}
 
@@ -22,43 +23,60 @@ export class Dashboard implements OnInit {
     this.loadShows();
   }
 
+  // 🔹 تحميل العروض
   loadShows() {
+    this.loading = true;
     this.http.get<any>(`${environment.apiUrl}/shows`).subscribe({
-      next: (res) => (this.shows = res.data ?? res),
-      error: (err) => console.error('❌ Error loading shows:', err),
+      next: (res) => {
+        this.shows = res.data ?? res;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('❌ Error loading shows:', err);
+        this.loading = false;
+        alert('فشل في تحميل العروض!');
+      },
     });
   }
 
+  // 🔹 حفظ عرض جديد أو تحديث عرض موجود
   handleSave(show: any) {
-    if (show.id) {
-      // Update
-      this.http.put(`${environment.apiUrl}/shows/${show.id}`, show).subscribe({
-        next: () => {
-          this.loadShows();
-          this.editingShow = null;
-          alert('✅ Show updated successfully');
-        },
-      });
-    } else {
-      // Add
-      this.http.post(`${environment.apiUrl}/shows`, show).subscribe({
-        next: () => {
-          this.loadShows();
-          alert('✅ Show added successfully');
-          this.editingShow = null; // علشان الفورم يرجع فارغ
-        },
-      });
-    }
+    const request = show.id
+      ? this.http.put(`${environment.apiUrl}/shows/${show.id}`, show)
+      : this.http.post(`${environment.apiUrl}/shows`, show);
+
+    request.subscribe({
+      next: () => {
+        this.loadShows();
+        this.editingShow = null;
+        alert(show.id ? '✅ Show updated successfully' : '✅ Show added successfully');
+      },
+      error: (err) => {
+        console.error('❌ Error saving show:', err);
+        alert('حدث خطأ أثناء الحفظ!');
+      },
+    });
   }
 
+  // 🔹 تعديل عرض
   editShow(show: any) {
     this.editingShow = { ...show };
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // 🔹 حذف عرض
   deleteShow(id: number) {
+    if (!confirm('هل أنت متأكد من حذف هذا العرض؟')) return;
+
     this.http.delete(`${environment.apiUrl}/shows/${id}`).subscribe({
-      next: () => this.loadShows(),
+      next: () => {
+        this.loadShows();
+        alert('🗑️ تم حذف العرض بنجاح');
+      },
+      error: (err) => {
+        console.error('❌ Error deleting show:', err);
+        alert('فشل في حذف العرض!');
+      },
     });
   }
 }

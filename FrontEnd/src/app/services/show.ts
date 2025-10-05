@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface ShowSchedule {
@@ -14,26 +14,34 @@ export interface Show {
   description: string;
   price: number;
   posterUrl: string;
-  schedules: ShowSchedule[]; // هنا هتضاف المواعيد
+  schedules: ShowSchedule[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShowService {
-  private apiUrl = 'http://127.0.0.1:8000/api/shows'; // Laravel API endpoint
+  private apiUrl = 'http://127.0.0.1:8000/api/shows';
 
   constructor(private http: HttpClient) {}
 
   getShows(): Observable<{ data: Show[] }> {
-    return this.http.get<{ data: Show[] }>(this.apiUrl);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    });
+
+    return this.http.get<{ data: Show[] }>(this.apiUrl, { headers });
   }
 
   getShow(id: number): Observable<{ data: Show }> {
-    return this.http.get<{ data: Show }>(`${this.apiUrl}/${id}`);
-  }
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    });
 
-  // getShow(id: number): Observable<Show> {
-  //   return this.http.get<Show>(`${this.apiUrl}/${id}`);
-  // }
+    return this.http.get<{ data: Show }>(`${this.apiUrl}/${id}`, { headers });
+  }
 }

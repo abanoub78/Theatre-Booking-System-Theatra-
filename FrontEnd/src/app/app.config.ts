@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([authInterceptor]) // 👈 أضفنا الانترسبتور هنا
+      withInterceptors([authInterceptor]) // ✅ هنا مهم جدًا
     ),
   ],
 };

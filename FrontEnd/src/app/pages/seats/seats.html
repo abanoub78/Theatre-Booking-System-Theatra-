@@ -1,66 +1,116 @@
-<div class="container mt-4" style="padding-top: 70px">
-  <h3 class="mb-3 text-center">🎟️ Select Your Seat</h3>
-  <div class="seat-grid" style="display: flex; flex-wrap: wrap; width: 1300px">
-    <div style="width: 1200px; display: flex; flex-wrap: wrap; margin: 50px">
+<div class="container py-5" style="padding-top: 100px !important">
+  <h2 class="text-center mb-4 fw-bold text-primary">🎭 Book Your Theatre Seats</h2>
+
+  <!-- SEAT SELECTION -->
+  <section class="bg-light p-4 rounded-4 shadow-sm mb-5">
+    <h4 class="text-center mb-4">🎟️ Select Your Seats</h4>
+    <div class="seat-grid d-flex flex-wrap justify-content-center gap-3">
       @for (seat of seats; track seat.id) {
       <div
-        style="margin: 10px"
+        class="seat-card rounded-3"
         (click)="toggleSeat(seat.id)"
-        [ngStyle]="{
-          'background-color': isSeatReserved(seat.id)
-            ? 'weight'
-            : isSelected(seat.id)
-            ? 'yellow'
-            : 'weight',
-          cursor: isSeatReserved(seat.id) ? 'not-allowed' : 'pointer'
+        [ngClass]="{
+          reserved: isSeatReserved(seat.id),
+          selected: isSelected(seat.id)
         }"
       >
         <img
-          [src]="isSeatReserved(seat.id) ? 'assets/chair-y.png' : 'assets/chair-b.png'"
-          width="100"
-          height="100"
+          [src]="
+            isSeatReserved(seat.id)
+              ? 'assets/chair-y.png'
+              : isSelected(seat.id)
+              ? 'assets/chair-y.png'
+              : 'assets/chair-b.png'
+          "
+          width="70"
+          height="70"
           alt="chair"
         />
       </div>
       }
     </div>
-  </div>
-  <button class="btn btn-primary" (click)="confirmSelection()">confirmSelection</button>
-</div>
-<h2>الخدمات الإضافية</h2>
 
-<div class="services-list">
-  <div *ngFor="let service of availableServices" class="service-item">
-    <span>{{ service.name }} ({{ service.price }} جنيه)</span>
-    <div class="quantity-controls">
-      <button (click)="updateServiceQuantity(service, -1)">-</button>
-      <span>{{ service.quantity }}</span>
-      <button (click)="updateServiceQuantity(service, 1)">+</button>
+    <!-- <div class="text-center mt-4">
+      <button class="btn btn-success btn-lg px-5" (click)="confirmSelection()">
+        ✅ Confirm Selection
+      </button>
+    </div> -->
+  </section>
+
+  <!-- EXTRA SERVICES -->
+  <section class="p-4 rounded-4 shadow-sm bg-white mb-5">
+    <h4 class="text-secondary mb-4 text-center">💡 Extra Services</h4>
+    <div class="row gy-3">
+      <div *ngFor="let service of availableServices" class="col-md-6 col-lg-4">
+        <div class="service-card p-3 rounded-4 d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ service.name }}</strong>
+            <div class="text-muted small">{{ service.price }} EGP</div>
+          </div>
+          <div class="btn-group">
+            <button
+              class="btn btn-outline-danger btn-sm"
+              (click)="updateServiceQuantity(service, -1)"
+            >
+              −
+            </button>
+            <span class="px-3">{{ service.quantity }}</span>
+            <button
+              class="btn btn-outline-success btn-sm"
+              (click)="updateServiceQuantity(service, 1)"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <!-- INVOICE -->
+  <div class="text-center mb-4">
+    <button class="btn btn-outline-primary" (click)="showInvoice = !showInvoice">
+      {{ showInvoice ? '🧾 Hide Invoice' : '📄 Show Invoice' }}
+    </button>
   </div>
-</div>
 
-<button (click)="showInvoice = !showInvoice">
-  {{ showInvoice ? 'اخفاء الفاتورة' : 'عرض الفاتورة' }}
-</button>
+  <section *ngIf="showInvoice" class="invoice p-4 rounded-4 shadow-lg bg-white mb-5">
+    <h4 class="fw-bold mb-3 text-center text-success">🧾 Invoice</h4>
 
-<div *ngIf="showInvoice" class="invoice">
-  <h3>الفاتورة</h3>
+    <div class="mb-3">
+      <h5>🎫 Selected Seats:</h5>
+      <ul>
+        <li *ngFor="let seat of selectedSeats" class="text-primary fw-semibold">
+          Seat #{{ seat }}
+        </li>
+      </ul>
+    </div>
 
-  <h4>المقاعد المختارة:</h4>
-  <ul>
-    <li *ngFor="let seat of selectedSeats">{{ seat }}</li>
-  </ul>
+    <div class="mb-3">
+      <h5>💡 Extra Services:</h5>
+      <ul class="list-unstyled">
+        @for (service of availableServices; track $index) { @if (service.quantity > 0) {
+        <li>
+          {{ service.name }} × {{ service.quantity }} =
+          <strong>{{ service.price * service.quantity }} EGP</strong>
+        </li>
+        } }
+      </ul>
+    </div>
 
-  <h4>الخدمات:</h4>
-  <ul>
-    @for(service of availableServices;track $index ){@if(service.quantity > 0){}
-    <li>
-      {{ service.name }} × {{ service.quantity }} = {{ service.price * service.quantity }} جنيه
-    </li>
-    }
-  </ul>
+    <div class="text-end">
+      <h5 class="fw-bold">
+        Total:
+        <span class="text-danger">{{ calculateTotal() }} EGP</span>
+      </h5>
+    </div>
+  </section>
 
-  <h4>الإجمالي:</h4>
-  <p>{{ calculateTotal() }} جنيه</p>
+  <!-- PAYMENT SECTION -->
+  <section class="mt-5">
+    <app-payment
+      [totalAmount]="calculateTotal()"
+      (onPaymentCompleted)="handlePayment($event)"
+    ></app-payment>
+  </section>
 </div>

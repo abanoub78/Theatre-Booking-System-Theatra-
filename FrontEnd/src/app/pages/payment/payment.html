@@ -1,0 +1,60 @@
+<div class="payment-box shadow-sm p-4 rounded-4 bg-white">
+  <h4 class="text-center text-primary mb-3">💳 Payment Form</h4>
+
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Select Payment Method:</label>
+    <select [(ngModel)]="paymentMethod" class="form-select">
+      <option value="card">💳 Credit / Debit Card</option>
+      <option value="wallet">📱 E-Wallet</option>
+      <option value="paypal">🌐 PayPal</option>
+    </select>
+  </div>
+
+  <!-- CARD FORM -->
+  <div *ngIf="paymentMethod === 'card'" class="animate-fade">
+    <div class="mb-3">
+      <label class="form-label">Card Number</label>
+      <input
+        type="text"
+        [(ngModel)]="cardNumber"
+        class="form-control"
+        placeholder="1234 5678 9012 3456"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Card Holder Name</label>
+      <input type="text" [(ngModel)]="cardHolder" class="form-control" placeholder="Your Name" />
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Expiry Date</label>
+        <input type="text" [(ngModel)]="expiry" class="form-control" placeholder="MM/YY" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">CVV</label>
+        <input type="password" [(ngModel)]="cvv" class="form-control" placeholder="123" />
+      </div>
+    </div>
+  </div>
+
+  <!-- WALLET FORM -->
+  <div *ngIf="paymentMethod === 'wallet'" class="animate-fade">
+    <label class="form-label">Wallet Number</label>
+    <input type="text" [(ngModel)]="walletNumber" class="form-control" placeholder="01xxxxxxxxx" />
+  </div>
+
+  <!-- PAYPAL FORM -->
+  <div *ngIf="paymentMethod === 'paypal'" class="animate-fade">
+    <label class="form-label">PayPal Email</label>
+    <input
+      type="email"
+      [(ngModel)]="paypalEmail"
+      class="form-control"
+      placeholder="email@example.com"
+    />
+  </div>
+
+  <div class="text-center mt-4">
+    <button class="btn btn-success btn-lg px-5" (click)="pay()">Pay {{ totalAmount }} EGP</button>
+  </div>
+</div>
