@@ -1,24 +1,29 @@
-<div class="container mt-4">
+<div class="container mt-4" style="padding-top: 70px">
   <h3 class="mb-3 text-center">🎟️ Select Your Seat</h3>
-  <div class="seat-grid" style="display: flex; flex-wrap: wrap; width: 1300px;" >
-    <div style="width: 1200px; display: flex;flex-wrap: wrap;margin: 50px;">
-    @for (seat of seats; track seat.id) {
-      <div style="margin: 10px;" (click)="toggleSeat(seat.id)" 
-      [ngStyle]="{
-         'background-color': isSeatReserved(seat.id)
+  <div class="seat-grid" style="display: flex; flex-wrap: wrap; width: 1300px">
+    <div style="width: 1200px; display: flex; flex-wrap: wrap; margin: 50px">
+      @for (seat of seats; track seat.id) {
+      <div
+        style="margin: 10px"
+        (click)="toggleSeat(seat.id)"
+        [ngStyle]="{
+          'background-color': isSeatReserved(seat.id)
             ? 'weight'
             : isSelected(seat.id)
-              ? 'yellow'
-              : 'weight',
-         'cursor': isSeatReserved(seat.id) ? 'not-allowed' : 'pointer'
-       }"
+            ? 'yellow'
+            : 'weight',
+          cursor: isSeatReserved(seat.id) ? 'not-allowed' : 'pointer'
+        }"
       >
-<img [src]="isSeatReserved(seat.id) ? 'assets/chair-y.png' : 'assets/chair-b.png'"
-     width="100"
-     height="100"
-     alt="chair">
-   </div> }
-</div>
+        <img
+          [src]="isSeatReserved(seat.id) ? 'assets/chair-y.png' : 'assets/chair-b.png'"
+          width="100"
+          height="100"
+          alt="chair"
+        />
+      </div>
+      }
+    </div>
   </div>
-  <button class="btn btn-primary" (click)="confirmSelection()">confirmSelection </button>
-</div> 
+  <button class="btn btn-primary" (click)="confirmSelection()">confirmSelection</button>
+</div>
