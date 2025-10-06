@@ -37,7 +37,7 @@ export class ShowsDetails {
   show!: Show;
   loading = true;
   selectedSchedule: ShowSchedule | null = null;
-
+  Screenings!:any[];
   constructor(
     private route: ActivatedRoute,
     private showService: ShowService,
@@ -56,11 +56,15 @@ export class ShowsDetails {
         this.loading = false;
       },
     });
+    this.showService.getScreeningStartTime(id).subscribe((data) => {
+      this.Screenings = data;
+      console.log(this.Screenings);
+    })
   }
 
-  bookTicket() {
+  bookTicket() {                                                                                //mustafa
     if (this.show && this.selectedSchedule) {
-      this.router.navigate(['/booking', this.show.id, this.selectedSchedule.id]);
+      this.router.navigate(['/booking', this.show.id, this.selectedSchedule]);
     }
   }
 }

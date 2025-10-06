@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface ShowSchedule {
+  value: any;
   id: number;
   date: string;
   time: string;
@@ -43,5 +44,8 @@ export class ShowService {
     });
 
     return this.http.get<{ data: Show }>(`${this.apiUrl}/${id}`, { headers });
+  }
+   getScreeningStartTime(id: number): Observable<any[]> {                                               //mustafa
+    return this.http.get<any[]>(`http://127.0.0.1:8000/api/screenings/${id}`);
   }
 }

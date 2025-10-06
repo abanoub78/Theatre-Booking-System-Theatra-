@@ -21,9 +21,11 @@
           <label class="form-label fw-bold">📅 Select Schedule:</label>
           <select class="form-select" [(ngModel)]="selectedSchedule" required>
             <option [ngValue]="null" disabled selected>-- Choose a schedule --</option>
-            <option *ngFor="let s of show.schedules" [ngValue]="s">
-              Date: {{ s.date }} / Time : {{ s.time }} PM
-            </option>
+            @for(screening of Screenings ; track screening.id){
+            <option value="{{screening.id}}">
+              {{screening.start_time}}
+            </option>}
+        
           </select>
         </div>
 

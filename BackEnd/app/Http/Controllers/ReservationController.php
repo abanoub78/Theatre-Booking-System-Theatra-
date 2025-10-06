@@ -9,6 +9,14 @@ public function getReservedSeats()
 {
     return Reservation::all(); 
 }
+public function getSeatId($show_id,$screening_id)
+{
+    // $startTimes = Screening::where('show_id', $show_id)->pluck('start_time');
+    // return $startTimes ;
+    return Reservation::where('show_id', $show_id)
+                    ->where('screening_id', $screening_id)
+                    ->get(["seat_id"]);
+}
 public function reserveSeats(Request $request)
     {
         $validated = $request->validate([

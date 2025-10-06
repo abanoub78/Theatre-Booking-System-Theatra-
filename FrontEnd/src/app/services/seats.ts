@@ -23,7 +23,6 @@ constructor(private http: HttpClient) {
   private services: any[] = [];
 
 
-  // ✅ عند بدء التطبيق، حاول ترجع البيانات من sessionStorage
   private loadFromSession() {
     const saved = sessionStorage.getItem('booking');
     if (saved) {
@@ -33,8 +32,6 @@ constructor(private http: HttpClient) {
       this.services = data.services || [];
     }
   }
-
-  // ✅ احفظ البيانات الحالية في sessionStorage
   private saveToSession() {
     const data: any = {
       showId: this.showId!,
@@ -96,29 +93,14 @@ constructor(private http: HttpClient) {
   this.services = this.services.filter(s => s.serviceId !== serviceId);
   this.saveToSession();
 }
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   getAllSeats(): Observable<Seat[]> {
     return this.http.get<Seat[]>('http://127.0.0.1:8000/api/seats');
   }
   getReservedSeats(): Observable<any[]> {
     return this.http.get<any[]>(`http://127.0.0.1:8000/api/reservations`);
   }
+ getSeatId(show_id :number , screening_id:number): Observable<any[]> {
+    return this.http.get<any[]>(`http://127.0.0.1:8000/api/reservations/${show_id}/${screening_id}`);
+  }
+ 
 }

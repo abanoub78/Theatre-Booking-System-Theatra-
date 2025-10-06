@@ -18,7 +18,7 @@ export const routes: Routes = [
   { path: 'contact', component: Contact },
   { path: 'shows', component: Shows, canActivate: [AuthGuard] },
   { path: 'shows/:id', component: ShowsDetails, canActivate: [AuthGuard] },
-  { path: 'booking/:screening_id/:user_id', component: Seats, canActivate: [AuthGuard] }, //mustafa
+  { path: 'booking/:show_id/:screening_id', component: Seats, canActivate: [AuthGuard] }, //mustafa
   { path: 'register', component: Register },
   { path: 'login', component: Login },
   { path: 'admin/dashboard', component: Dashboard, canActivate: [AuthGuard, adminGuard] },

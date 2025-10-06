@@ -73,16 +73,17 @@
       {{ showInvoice ? '🧾 Hide Invoice' : '📄 Show Invoice' }}
     </button>
   </div>
-
-  <section *ngIf="showInvoice" class="invoice p-4 rounded-4 shadow-lg bg-white mb-5">
+@if(showInvoice){
+  <section class="invoice p-4 rounded-4 shadow-lg bg-white mb-5">
     <h4 class="fw-bold mb-3 text-center text-success">🧾 Invoice</h4>
 
     <div class="mb-3">
       <h5>🎫 Selected Seats:</h5>
       <ul>
-        <li *ngFor="let seat of selectedSeats" class="text-primary fw-semibold">
+        @for(seat of selectedSeats;track $index){
+        <li class="text-primary fw-semibold">
           Seat #{{ seat }}
-        </li>
+        </li>}
       </ul>
     </div>
 
@@ -105,7 +106,7 @@
       </h5>
     </div>
   </section>
-
+}
   <!-- PAYMENT SECTION -->
   <section class="mt-5">
     <app-payment
