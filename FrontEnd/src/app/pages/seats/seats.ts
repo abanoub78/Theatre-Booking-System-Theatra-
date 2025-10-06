@@ -24,6 +24,7 @@ export class Seats implements OnInit {
   http = inject(HttpClient);
   screening_id!: number;
   show_id!: number;
+  user_id!:number;
   showInvoice = false;
 
   constructor(
@@ -52,17 +53,25 @@ export class Seats implements OnInit {
       const id = params.get('show_id');
       if (id) {
         this.show_id = +id;
+        console.log(id);
       }
     });
     this.route.paramMap.subscribe((params) => {
       const id = params.get('screening_id');
       if (id) {
         this.screening_id = +id;
+        console.log(id);
+      }
+    });
+      this.route.paramMap.subscribe((params) => {
+      const id = params.get('user_id');
+      if (id) {
+        this.user_id = +id;
+        console.log(id);
       }
     });
     this.seatsService.getAllSeats().subscribe((data) => {
       this.seats = data;
-      console.log(this.seats);
     });
 
     this.seatsService.getReservedSeats().subscribe((data) => {
@@ -137,12 +146,14 @@ export class Seats implements OnInit {
       show_id: this.show_id,
       seat_ids: this.selectedSeats,
       screening_id: this.screening_id,
+      user_id:this.user_id
     };
+    console.log(payload);
     this.http.post('http://127.0.0.1:8000/api/reservations', payload).subscribe({
       next: (res) => {
-        alert(' done  ');
         this.selectedSeats = [];
         this.router.navigate(['']);
+        console.log(payload);
       },
       error: (err) => {
         alert(' error while booking ');

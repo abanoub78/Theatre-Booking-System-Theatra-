@@ -17,6 +17,7 @@ class Reservation extends Model
         protected $fillable = [
         'screening_id',
         'seat_id',
-        'user_id'
+        'user_id',
+        'show_id',
     ];
 }

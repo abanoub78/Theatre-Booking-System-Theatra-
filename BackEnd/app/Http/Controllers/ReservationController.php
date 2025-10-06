@@ -24,9 +24,11 @@ public function reserveSeats(Request $request)
             'seat_ids' => 'required|array|min:1',
             'seat_ids.*' => 'integer|exists:seats,id',
             'user_id' => 'required',
+            'show_id'=>'required',
         ]);
         $screening_id = $validated['screening_id'];
         $seat_ids = $validated['seat_ids'];
+        $show_id = $validated['show_id'];
         $user_id = $validated['user_id'];
 
         $alreadyReserved = Reservation::where('screening_id', $screening_id)
@@ -44,6 +46,7 @@ public function reserveSeats(Request $request)
             Reservation::create([
                 'screening_id' => $screening_id,
                 'seat_id' => $seat_id,
+                'show_id' => $show_id,
                 'user_id' => $user_id,
             ]);
         }
